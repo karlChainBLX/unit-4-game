@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>jquerryCristalCollector</title>
+
+  <!-- Added link to the jQuery Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+  <!-- Added a link to Bootstrap-->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+</head>
+<body>
+
+  <div class="jumbotron">
+    <h1 class="text-center">Cristal Collector</h1>
+    <h3 class="text-center"> Chose the right combination of gems to hit exactly your spending limit to win!
+    </h3>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <!-- Result Panel -->
+      <div class="col-lg-6">
+        <div class="card">
+          <h3 class="card-header">Spend as much as:</h3>
+          <div class="card-body">
+            <h1 id="number-to-guess"></h1>
+            <h1 id="showcounter"></h1>
+            <hr>
+            <h1 id="result"></h1>
+          </div>
+        </div>
+      </div>  
+    </div>
+  </div>
+
+  <script type="text/javascript">
+
+
+$(document).ready(function() 
+{
+
+
+  $(".operator").on("click", function() {
+ 
+   
+  var numberOptions = [gemone, gemtwo, gemthree, gemfour];
+
+  for (var i = 0; i < numberOptions.length; i++) {
+
+     
+    var imageCrystal = $("<img>");
+    imageCrystal.addClass("crystal-image");
+    imageCrystal.attr("src","assets/images/gemme"+i+".png"); 
+    imageCrystal.attr("data-crystalvalue", numberOptions[i]);
+    $("#crystals").append(imageCrystal);
+  }
+
+// Call  initializeCalculater so we can set the state of our app
+      initializegame();
+   
+
+</script>
+
+</body>
+</html>
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CrystalGame</title>
+
+  <style type="text/css">
+
+    .crystal-image {
+      width: 150px;
+      height: 150px;
+    }
+  </style>
+
+</head>
+
+<body>
+
+   
+   
+  <!-- Note that this div is now empty. We will fill it dynamically -->
+  <div id="crystals">
+  </div>
+
+  <!-- JAVASCRIPT  -->
+  <!-- ========================================= -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+  <script type="text/javascript">
+
+  //ok got random trgetnumber number to guess
+
+  var targetNumber = [Math.floor(Math.random()*101+19)] 
+  var gemone = [Math.floor(Math.random()*11+1)]
+  var gemtwo = [Math.floor(Math.random()*11+1)]
+  var gemthree = [Math.floor(Math.random()*11+1)]
+  var gemfour = [Math.floor(Math.random()*11+1)]
+  $("#number-to-guess").text(targetNumber);
+  var counter = 0;
+  
+
+  // Now for the hard part. Creating multiple crystals each with their own unique number value.
+
+  // We begin by expanding our array to include four options.
+  var numberOptions = [gemone, gemtwo, gemthree, gemfour];
+
+  // Next we create a for loop to create crystals for every numberOption.
+  for (var i = 0; i < numberOptions.length; i++) {
+
+    // For each iteration, we will create an imageCrystal
+    var imageCrystal = $("<img>");
+
+    // First each crystal will be given the class ".crystal-image".
+    // This will allow the CSS to take effect.
+  
+    imageCrystal.addClass("crystal-image");
+
+    // Each imageCrystal will be given a src link to the crystal image
+     imageCrystal.attr("src","assets/images/gemme"+i+".png"); 
+    
+
+    // Each imageCrystal will be given a data attribute called data-crystalValue.
+    // This data attribute will be set equal to the array value.
+    imageCrystal.attr("data-crystalvalue", numberOptions[i]);
+
+    // Lastly, each crystal image (with all it classes and attributes) will get added to the page.
+    $("#crystals").append(imageCrystal);
+  }
+
+  // This time, our click event applies to every single crystal on the page. Not just one.
+  $(".crystal-image").on("click", function() {
+
+    // Determining the crystal's value requires us to extract the value from the data attribute.
+    // Using the $(this) keyword specifies that we should be extracting the crystal value of the clicked crystal.
+    // Using the .attr("data-crystalvalue") allows us to grab the value out of the "data-crystalvalue" attribute.
+    // Since attributes on HTML elements are strings, we must convert it to an integer before adding to the counter
+
+    var crystalValue = ($(this).attr("data-crystalvalue"));
+    crystalValue = parseInt(crystalValue);
+    // We then add the crystalValue to the user's "counter" which is a global variable.
+    // Every click, from every crystal adds to the global counter.
+    
+    counter = counter + crystalValue;
+    $("#showcounter").text (counter)
+    // All of the same game win-lose logic applies. So the rest remains unchanged.
+    
+   
+     
+
+    if (counter < targetNumber) {
+      $("#result").text ("draw again")  ;
+    }
+
+    if (counter == targetNumber) {
+      $("#result").text ("you win")  ;
+       
+    }
+    if (counter > targetNumber) {
+      $("#result").text ("you are a loser");
+      location.reload();
+
+
+      
+        
+    }
+   
+  });
+
+  </script>
+</body>
+</html>
